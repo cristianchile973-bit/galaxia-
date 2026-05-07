@@ -29,153 +29,196 @@
 
  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+  }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-      background-color: #000;
-      font-family: 'Patrick Hand', cursive;
-      cursor: grab;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #000;
+    font-family: 'Patrick Hand', cursive;
+    cursor: grab;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body:active { 
+    cursor: grabbing; 
+  }
+
+  canvas {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  /* ===== NUEVA PARTE RESPONSIVE ===== */
+
+  #main-title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    color: #F6D1D5;
+    text-shadow: 0 0 15px #E8A2A8, 0 0 25px #D97F88;
+    z-index: 10;
+    pointer-events: none;
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  #entry-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    z-index: 9999;
+    padding: 25px;
+    text-align: center;
+  }
+
+  #entry-button {
+    width: min(90%, 340px);
+    padding: 16px 24px;
+    border: 2px solid #E8A2A8;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #F2B9BF, #D97F88);
+    color: #fff;
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 700;
+    cursor: pointer;
+    filter: drop-shadow(0 0 15px #E8A2A8)
+            drop-shadow(0 0 25px #D97F88);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    animation: latido 1.5s infinite ease-in-out;
+  }
+
+  #entry-button:hover {
+    filter: drop-shadow(0 0 20px #F4C2C7)
+            drop-shadow(0 0 35px #E8A2A8);
+    transform: scale(1.05);
+  }
+
+  @keyframes latido {
+    0%, 100% { 
+      transform: scale(1); 
     }
 
-    body:active { cursor: grabbing; }
-
-    canvas {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
+    50% { 
+      transform: scale(1.08); 
     }
+  }
+
+  #entry-text {
+    width: 90%;
+    max-width: 500px;
+    font-size: clamp(1rem, 3vw, 1.6rem);
+    color: #F6D1D5;
+    text-shadow: 0 0 10px #E8A2A8;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
 
     #main-title {
-      position: absolute;
-      top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 3.5em;
-      color: #F6D1D5;
-      text-shadow: 0 0 15px #E8A2A8, 0 0 25px #D97F88;
-      z-index: 10;
-      pointer-events: none;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    #entry-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      color: white;
-      z-index: 9999;
-      padding: 20px;
+      top: 15px;
+      font-size: 1.9rem;
     }
 
     #entry-button {
-      padding: 16px 34px;
-      border: 2px solid #E8A2A8;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #F2B9BF, #D97F88);
-      color: #fff;
-      font-family: 'Patrick Hand', cursive;
-      font-size: 2em;
-      font-weight: 700;
-      cursor: pointer;
-      filter: drop-shadow(0 0 15px #E8A2A8) drop-shadow(0 0 25px #D97F88);
-      transition: all 0.3s ease;
-      margin-bottom: 20px;
-      animation: latido 1.5s infinite ease-in-out;
-    }
-
-    #entry-button:hover {
-      filter: drop-shadow(0 0 20px #F4C2C7) drop-shadow(0 0 35px #E8A2A8);
-      transform: scale(1.05);
-    }
-
-    @keyframes latido {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      padding: 14px 20px;
+      font-size: 1.4rem;
     }
 
     #entry-text {
-      font-size: 1.8em;
-      color: #F6D1D5;
-      text-shadow: 0 0 10px #E8A2A8;
-      text-align: center;
+      font-size: 1rem;
     }
+  }
 
-    #love-card-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 100;
-      backdrop-filter: blur(5px);
-      cursor: pointer;
-    }
+  /* ===== RESTO DEL CSS ===== */
 
-    #love-card {
-      position: relative;
-      width: 90%;
-      max-width: 400px;
-      aspect-ratio: 9 / 16;
-      background-size: cover;
-      background-position: center;
-      border-radius: 20px;
-      box-shadow: 0 0 30px #E8A2A8, 0 0 50px #D97F88;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 25px;
-      text-align: center;
-      overflow: hidden;
-    }
+  #love-card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+  }
 
-    #love-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: 1;
-    }
+  #love-card {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 9 / 16;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    box-shadow: 0 0 30px #E8A2A8, 0 0 50px #D97F88;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+    overflow: hidden;
+  }
 
-    #love-card-text {
-      position: relative;
-      font-size: 3em;
-      color: #fff;
-      text-shadow: 0 0 8px black, 0 0 15px black;
-      z-index: 2;
-    }
+  #love-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
 
-    @media (max-width: 768px) {
-      #main-title { font-size: 3.4em; top: 25px; }
-      #love-card-text { font-size: 2.8em; }
-    }
+  #love-card-text {
+    position: relative;
+    font-size: 3em;
+    color: #fff;
+    text-shadow: 0 0 8px black, 0 0 15px black;
+    z-index: 2;
+  }
 
-    @media (max-width: 480px) {
-      #main-title { font-size: 2.5em; top: 20px; }
+  @media (max-width: 768px) {
+    #love-card-text { 
+      font-size: 2.8em; 
     }
-  </style>
+  }
+
+  @media (max-width: 480px) {
+    #love-card-text { 
+      font-size: 2rem; 
+    }
+  }
+</style>
 </head>
 
 <body>
